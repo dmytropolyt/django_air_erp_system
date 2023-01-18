@@ -1,0 +1,12 @@
+{% extends 'airsite/index.html' %}
+{% block title %}
+  <title>DjangoAir - Logout</title>
+{% endblock title %}
+{% block content %}
+   <h2>You have been logged out</h2>
+    <div class="">
+        <small class="text-muted">
+            <a href="{% url 'login' %}">Log In Again</a>
+        </small>
+    </div>
+{% endblock content %}

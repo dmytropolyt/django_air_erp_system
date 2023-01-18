@@ -1,0 +1,98 @@
+{% extends 'airsite/index.html' %}
+{% block title %}
+    <title>DjangoAir - Personal Cabinet</title>
+{% endblock title %}
+{% block content %}
+    <style>
+        .card p {
+            font-size: 20px;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+
+        .col-5 p {
+            margin-top: 30px;
+        }
+
+        #accordionHeader {
+            margin-left: 70px;
+        }
+    </style>
+    <div class="card mt-3" style="width: 40rem;">
+        <div class="card-header" style="background-color: #00FFFF">
+            <h5>Your info:</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-5" style="border-right: 0.5px solid">
+                    <p class=""><i class="bi bi-person-circle"></i> {{ user.username }}</p>
+                    <p class=""><i class="bi bi-person-vcard-fill"></i> {{ user.get_full_name }}</p>
+                    <p class=""><i class="bi bi-envelope-at-fill"></i> {{ user.email }}</p>
+                </div>
+                <div class="col-5 offset-1 d-flex justify-content-end">
+                    <img src="https://i.pinimg.com/564x/e6/1a/22/e61a229def80058c229d78988dcd447b.jpg" class="img-thumbnail">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card mt-3" style="width: 40rem;">
+        {% block cabinet %}
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="true" href="{% url 'personal-cabinet' %}">Upcoming Flights</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="{% url 'personal-cabinet-previous' %}">Previous Flight</a>
+                  </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                {% if upcoming_flights %}
+                {% for flight in upcoming_flights %}
+                    <div class="accordion" id="accordionExample">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <p id="accordionHeader"><i class="bi bi-airplane"></i> {{ flight.0 }}, {{ flight.1|date:"d/m/Y H:i" }}, Tickets - {{ flight.2 }} <i class="bi bi-airplane"></i></p>
+                          </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                          <div class="accordion-body">
+                            <div class="row">
+                                {% for ticket in flight.3 %}
+
+                                  <div class="col-4">
+                                      <div class="card border-primary text-primary">
+                                          <div class="card-body">
+                                              <h5 class="card-title text-center">Ticket - {{ forloop.counter }}</h5>
+                                          </div>
+                                          <ul class="list-group list-group-flush">
+                                            <li class="list-group-item">Seat: {{ ticket.seat }}</li>
+                                            {% if ticket.option %}
+                                                <li class="list-group-item">Option: {{ ticket.option }}</li>
+                                            {% endif %}
+                                            {% if ticket.option_2 %}
+                                                <li class="list-group-item">Option: {{ ticket.option_2 }}</li>
+                                            {% endif %}
+                                            <li class="list-group-item">Price: {{ ticket.price }}</li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                                {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                {% endfor %}
+                {% else %}
+                    <h5 class="text-center">No upcoming flights yet</h5>
+                {% endif %}
+            </div>
+        {% endblock cabinet %}
+    </div>
+{% endblock content %}

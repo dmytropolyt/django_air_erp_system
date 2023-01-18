@@ -1,0 +1,50 @@
+{% extends 'airsite/index.html' %}
+{% block title %}
+  <title>DjangoAir - Register</title>
+{% endblock title %}
+{% block content %}
+{% load crispy_forms_tags %}
+    <div class="card" style="border-radius: 15px;">
+      <div class="card-body p-5">
+        <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+
+        <form method="POST">
+
+          <div class="form-outline mb-4">
+            {{ register_form.first_name|as_crispy_field }}
+          </div>
+
+          <div class="form-outline mb-4">
+            {{ register_form.last_name|as_crispy_field }}
+          </div>
+
+          <div class="form-outline mb-4">
+            {{ register_form.username|as_crispy_field }}
+          </div>
+
+          <div class="form-outline mb-4">
+            {{ register_form.email|as_crispy_field }}
+          </div>
+
+          <div class="form-outline mb-4">
+            {{ register_form.password1|as_crispy_field }}
+          </div>
+
+          <div class="form-outline mb-4">
+            {{ register_form.password2|as_crispy_field }}
+          </div>
+
+          <div class="d-flex justify-content-center">
+            <button type="button"
+              class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+          </div>
+
+          <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="#!"
+              class="fw-bold text-body"><u>Login here</u></a></p>
+
+        </form>
+
+      </div>
+    </div>
+
+{% endblock content %}

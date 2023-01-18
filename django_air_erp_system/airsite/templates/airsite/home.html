@@ -1,0 +1,198 @@
+{% extends 'airsite/index.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    <title>DjangoAir - Home</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+{% endblock title %}
+{% block content %}
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+
+        .wrapper {
+            max-width: 800px;
+            margin: 10px auto;
+            border: solid;
+            border-radius: 15px;
+            border-width: 1px;
+        }
+
+        .wrapper form {
+            padding: 20px 50px;
+        }
+
+        .wrapper form .form-group {
+            padding-bottom: .5rem;
+        }
+
+        .wrapper form .option {
+            position: relative;
+            padding-left: 25px;
+            cursor: pointer;
+            display: block;
+        }
+
+        .wrapper form .option input {
+            display: none;
+        }
+
+        .wrapper form .checkmark {
+            position: absolute;
+            top: 4px;
+            left: 0;
+            height: 17px;
+            width: 17px;
+            background-color: #fff;
+            border: 1px solid #aaa;
+            border-radius: 50%;
+        }
+
+        .wrapper form .option input:checked~.checkmark:after {
+            display: block;
+        }
+
+        .wrapper form .option .checkmark:after {
+            content: "";
+            width: 7px;
+            height: 7px;
+            display: block;
+            border-radius: 50%;
+            background-color: #333;
+            position: absolute;
+            top: 48%;
+            left: 52%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: 200ms ease-in-out 0s;
+        }
+
+        .wrapper form .option:hover input[type="radio"]~.checkmark {
+            background-color: #f4f4f4;
+        }
+
+        .wrapper form .option input[type="radio"]:checked~.checkmark {
+            background: #fff;
+            color: #fff;
+            transition: 300ms ease-in-out 0s;
+        }
+
+        .wrapper form .option input[type="radio"]:checked~.checkmark:after {
+            transform: translate(-50%, -50%) scale(1);
+            color: #fff;
+        }
+
+        .wrapper form a {
+            color: #333;
+        }
+
+        .wrapper form .form-control {
+            outline: none;
+            border: none;
+        }
+
+        .wrapper form .form-control:focus {
+            box-shadow: none;
+        }
+
+        .wrapper form input[type="text"]:focus::placeholder {
+            color: transparent
+        }
+
+        input[type="date"] {
+            cursor: pointer;
+        }
+
+        .wrapper form .label::after {
+            position: absolute;
+            /* background-color: #fff; */
+            top: 5px;
+            left: 0px;
+            font-size: 0.9rem;
+            margin: 0rem 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08rem;
+            font-weight: 600;
+            color: #999;
+            transition: all .2s ease-in-out;
+            transform: scale(0);
+        }
+
+        .wrapper form .label#from::after {
+            content: 'From';
+        }
+
+        .wrapper form .label#to::after {
+            content: 'To';
+        }
+
+        .wrapper form .label#depart::after {
+            content: 'Depart Date';
+        }
+
+        .wrapper form .label#return::after {
+            content: 'Return Date';
+        }
+
+        .wrapper form .label#psngr::after {
+            content: 'Traveller(s)';
+        }
+
+        .wrapper form input[type="text"]:focus~.label::after {
+            top: -15px;
+            left: 0px;
+            transform: scale(1);
+        }
+
+        .wrapper form input[type="date"]:focus~.label::after {
+            top: -15px;
+            left: 0px;
+            transform: scale(1);
+        }
+
+        #formHeader {
+            background-color: #00FFFF;
+            margin-top: 40px;
+            margin-left: 50px;
+            width: 300px;
+            height: 70px;
+            border: none;
+            border-width: thin;
+            border-radius: 20px;
+
+        }
+
+        /* Margin */
+        .margin {
+            margin: 2rem 0rem;
+        }
+
+        /* Media Queries */
+        @media(max-width: 575.5px) {
+            .wrapper {
+                margin: 10px;
+            }
+
+            .wrapper form {
+                padding: 20px;
+            }
+
+            .margin {
+                margin: .2rem 0rem;
+            }
+        }
+    </style>
+    <div class="wrapper bg-white mt-4">
+        <div id="formHeader" class="d-flex justify-content-center">
+            <h3 class="text-center mt-3 mb-0 w-75"><i class="bi bi-airplane"></i> Take a flight</h3>
+        </div>
+        {% crispy form %}
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+    </script>
+{% endblock content %}

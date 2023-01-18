@@ -1,0 +1,75 @@
+version: "3.7"
+services:
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    env_file:
+      - ./.env.db
+    container_name: postgres_db
+
+  app:
+    build: .
+    volumes:
+      - .:/usr/src/app/
+    command: gunicorn django_air_erp_system.wsgi:application --bind 0.0.0.0:8000
+    env_file:
+      - ./.env
+    expose:
+      - 8000
+    depends_on:
+      - db
+
+  celery:
+    restart: always
+    build: .
+    command: celery -A core worker -l info
+    volumes:
+      - .:/usr/src/app/
+    container_name: celery
+    depends_on:
+      - redis
+      - app
+
+  celery-beat:
+    build: .
+    command: celery -A core beat -l info -S django
+    volumes:
+      - .:/usr/src/app/
+    container_name: celery-beat
+    depends_on:
+      - celery
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - app
+      - celery-beat
+
+  mock:
+    build: .
+    volumes:
+      - .:/usr/src/mock/
+    ports:
+      - 3000:3000
+    command: python main.py
+    depends_on:
+      - redis
+      - db
+      - app
+      - celery
+      - celery-beat
+
+
+
+
+
+
+

@@ -1,0 +1,57 @@
+{% extends 'users/personal_cabinet.html' %}
+{% block cabinet %}
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="true" href="{% url 'personal-cabinet' %}">Upcoming Flights</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'personal-cabinet-previous' %}">Previous Flight</a>
+          </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        {% if previous_flights %}
+        {% for flight in previous_flights %}
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <p id="accordionHeader"><i class="bi bi-airplane"></i> {{ flight.0 }}, {{ flight.1|date:"d/m/Y H:i" }}, Tickets - {{ flight.2 }} <i class="bi bi-airplane"></i></p>
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <div class="row">
+                        {% for ticket in flight.3 %}
+
+                          <div class="col-4">
+                              <div class="card border-success text-success">
+                                  <div class="card-body">
+                                      <h5 class="card-title text-center">Ticket - {{ forloop.counter }}</h5>
+                                  </div>
+                                  <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Seat: {{ ticket.seat }}</li>
+                                    {% if ticket.option %}
+                                        <li class="list-group-item">Option: {{ ticket.option }}</li>
+                                    {% endif %}
+                                    {% if ticket.option_2 %}
+                                        <li class="list-group-item">Option: {{ ticket.option_2 }}</li>
+                                    {% endif %}
+                                    <li class="list-group-item">Price: {{ ticket.price }}</li>
+                                  </ul>
+                              </div>
+                          </div>
+                        {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        {% endfor %}
+        {% else %}
+            <h5 class="text-center">No previous flights for now</h5>
+        {% endif %}
+    </div>
+{% endblock cabinet%}

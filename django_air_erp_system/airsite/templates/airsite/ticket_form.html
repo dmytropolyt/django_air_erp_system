@@ -1,0 +1,66 @@
+{% extends 'airsite/index.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+  <title>DjangoAir - Book Ticket</title>
+{% endblock title %}
+{% block content %}
+  <style>
+    .card {
+      width: 25rem;
+    }
+
+    .formHeader {
+      border-bottom: solid;
+      border-color: #00FFFF;
+    }
+
+
+  </style>
+  <div class="card border-dark m-4">
+    <div class="card-body" style="background-color: #00FFFF">
+        <h3 class="text-center mt-2">FLight Info:</h3>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item mt-2">
+          <div class="row">
+            <div class="col">Destination:</div><div class="col d-flex justify-content-end">{{ flight }}</div>
+          </div>
+      </li>
+      <li class="list-group-item mt-2">
+          <div class="row">
+              <div class="col">Time:</div><div class="col d-flex justify-content-end">{{ flight_date|date:"d/m/Y H:i" }}</div>
+          </div>
+      </li>
+      <li class="list-group-item mt-2 mb-1">
+          <div class="row">
+            <div class="col">Number of passengers:</div><div class="col d-flex justify-content-end">{{ passengers }}</div>
+          </div>
+      </li>
+    </ul>
+    <div class="card-body mt-2 mb-1">
+      <form method="POST">
+        {% if not user.is_authenticated %}
+        <div class="formHeader mb-3">
+          <h5 class="text-center mb-3">Enter your details</h5>
+        </div>
+          {{ user_form|crispy }}
+        {% endif %}
+        {{ ticket_formset.management_form }}
+        <div class="formHeader mb-3">
+          <h5 class="text-center mt-4 mb-3">Choose your seat and options</h5>
+        </div>
+        {% for form in ticket_formset %}
+          <div id="ticket-form">{{ form|crispy }}</div>
+        {% endfor %}
+        {% csrf_token %}
+        <div class="d-grid gap-2 mt-4 mb-3">
+          <button type="submit" class="btn btn-primary">Book Tickets</button>
+        </div>
+      </form>
+    </div>
+    <div class="">
+
+    </div>
+  </div>
+
+{% endblock content %}
